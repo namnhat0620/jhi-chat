@@ -1,0 +1,13 @@
+@import "src/styles.scss";
+
+.chat-home{
+    background-color: $app-theme;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.app-list-conversation {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}

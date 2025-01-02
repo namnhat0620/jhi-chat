@@ -1,0 +1,11 @@
+
+entity Random(jhi_random) {
+	@Id id String
+	login String
+	firstName String
+	lastName String
+	email String
+}
+
+paginate Random with infinite-scroll
+filter Random

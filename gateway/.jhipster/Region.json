@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20241229231748"
+  },
+  "applications": "*",
+  "databaseType": "sql",
+  "entityTableName": "jhi_region",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String",
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "login",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Region",
+  "pagination": "infinite-scroll",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

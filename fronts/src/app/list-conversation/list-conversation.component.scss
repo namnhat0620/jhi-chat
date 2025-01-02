@@ -1,0 +1,19 @@
+.jhi-list-conversation {
+    .p-input-icon-left {
+        .p-inputtext {
+            height: 2rem;
+            border-radius: 2rem;
+        }
+    
+        .jhi-clear-btn {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            background: #e3e2e2;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+        }
+    } 
+}

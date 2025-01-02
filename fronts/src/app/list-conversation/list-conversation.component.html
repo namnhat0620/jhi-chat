@@ -1,0 +1,19 @@
+<div class="jhi-list-conversation d-flex flex-column gap-2">
+    <div class="app-heading px-2">Chats</div>
+    
+    <!-- Search -->
+    <span class="p-input-icon-left w-100">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="value" (ngModelChange)="onValueChange()" class="w-100" />
+        <div *ngIf="isValueExisted" class="jhi-clear-btn d-flex justify-content-center align-items-center"
+        (click)="clearValue()">
+            <i class="pi pi-times"> </i>
+        </div>
+    </span>
+    
+    <!-- List conversation -->
+     <div *ngFor="let conversation of conversations">
+        <app-conversation [conversation]="conversation"></app-conversation>
+     </div>
+</div>
+ 

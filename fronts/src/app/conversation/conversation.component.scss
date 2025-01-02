@@ -1,0 +1,13 @@
+.jhi-conversation {
+    border-radius: 0.5rem;
+    .jhi-conversation-avatar {
+        .jhi-conversation-avatar-img {
+            width: 2rem;
+        }
+    }
+}
+
+.jhi-conversation:hover {
+    background-color: #e3e2e2;
+    cursor: pointer;
+}

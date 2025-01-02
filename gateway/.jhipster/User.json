@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20241229230402"
+  },
+  "applications": "*",
+  "databaseType": "sql",
+  "entityTableName": "jhi_user",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String",
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "login",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "User",
+  "pagination": "infinite-scroll",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
