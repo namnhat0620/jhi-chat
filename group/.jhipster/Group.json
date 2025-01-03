@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20250103011345"
+  },
+  "applications": "*",
+  "clientRootFolder": "group",
+  "databaseType": "sql",
+  "entityTableName": "jhi_group",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String",
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "lastMessageId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "avatar",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "group",
+  "name": "Group",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "userGroup",
+      "otherEntityRelationshipName": "group",
+      "relationshipName": "userGroup",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

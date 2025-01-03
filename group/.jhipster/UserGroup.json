@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20250103011346"
+  },
+  "applications": "*",
+  "clientRootFolder": "group",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "userId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "id": true
+      }
+    },
+    {
+      "fieldName": "isSeen",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isTurnOnNoti",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "group",
+  "name": "UserGroup",
+  "relationships": [
+    {
+      "otherEntityName": "group",
+      "otherEntityRelationshipName": "userGroup",
+      "relationshipName": "group",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

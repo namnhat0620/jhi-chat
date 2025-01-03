@@ -1,0 +1,20 @@
+entity Group {
+	id String @Id
+	type String
+    lastMessageId String
+    avatar String
+}
+
+entity UserGroup {
+	id String @Id
+    userId String required
+    isSeen Boolean
+    isTurnOnNoti Boolean
+}
+
+relationship ManyToOne {
+  UserGroup{group} to Group{userGroup}
+}
+
+paginate Group with infinite-scroll
+filter Group, UserGroup
