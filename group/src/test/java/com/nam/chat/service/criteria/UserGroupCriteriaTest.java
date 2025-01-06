@@ -75,7 +75,7 @@ class UserGroupCriteriaTest {
 
     private static void setAllFilters(UserGroupCriteria userGroupCriteria) {
         userGroupCriteria.id();
-        userGroupCriteria.userId();
+        userGroupCriteria.login();
         userGroupCriteria.isSeen();
         userGroupCriteria.isTurnOnNoti();
         userGroupCriteria.groupId();
@@ -86,7 +86,7 @@ class UserGroupCriteriaTest {
         return new Condition<>(
             criteria ->
                 condition.apply(criteria.getId()) &&
-                condition.apply(criteria.getUserId()) &&
+                condition.apply(criteria.getLogin()) &&
                 condition.apply(criteria.getIsSeen()) &&
                 condition.apply(criteria.getIsTurnOnNoti()) &&
                 condition.apply(criteria.getGroupId()) &&
@@ -99,7 +99,7 @@ class UserGroupCriteriaTest {
         return new Condition<>(
             criteria ->
                 condition.apply(criteria.getId(), copy.getId()) &&
-                condition.apply(criteria.getUserId(), copy.getUserId()) &&
+                condition.apply(criteria.getLogin(), copy.getLogin()) &&
                 condition.apply(criteria.getIsSeen(), copy.getIsSeen()) &&
                 condition.apply(criteria.getIsTurnOnNoti(), copy.getIsTurnOnNoti()) &&
                 condition.apply(criteria.getGroupId(), copy.getGroupId()) &&

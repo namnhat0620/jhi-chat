@@ -22,9 +22,9 @@ public class UserGroupCriteria implements Serializable, Criteria {
 
     private static final long serialVersionUID = 1L;
 
-    private StringFilter id;
+    private LongFilter id;
 
-    private StringFilter userId;
+    private StringFilter login;
 
     private BooleanFilter isSeen;
 
@@ -37,8 +37,8 @@ public class UserGroupCriteria implements Serializable, Criteria {
     public UserGroupCriteria() {}
 
     public UserGroupCriteria(UserGroupCriteria other) {
-        this.id = other.optionalId().map(StringFilter::copy).orElse(null);
-        this.userId = other.optionalUserId().map(StringFilter::copy).orElse(null);
+        this.id = other.optionalId().map(LongFilter::copy).orElse(null);
+        this.login = other.optionalLogin().map(StringFilter::copy).orElse(null);
         this.isSeen = other.optionalIsSeen().map(BooleanFilter::copy).orElse(null);
         this.isTurnOnNoti = other.optionalIsTurnOnNoti().map(BooleanFilter::copy).orElse(null);
         this.groupId = other.optionalGroupId().map(StringFilter::copy).orElse(null);
@@ -50,42 +50,42 @@ public class UserGroupCriteria implements Serializable, Criteria {
         return new UserGroupCriteria(this);
     }
 
-    public StringFilter getId() {
+    public LongFilter getId() {
         return id;
     }
 
-    public Optional<StringFilter> optionalId() {
+    public Optional<LongFilter> optionalId() {
         return Optional.ofNullable(id);
     }
 
-    public StringFilter id() {
+    public LongFilter id() {
         if (id == null) {
-            setId(new StringFilter());
+            setId(new LongFilter());
         }
         return id;
     }
 
-    public void setId(StringFilter id) {
+    public void setId(LongFilter id) {
         this.id = id;
     }
 
-    public StringFilter getUserId() {
-        return userId;
+    public StringFilter getLogin() {
+        return login;
     }
 
-    public Optional<StringFilter> optionalUserId() {
-        return Optional.ofNullable(userId);
+    public Optional<StringFilter> optionalLogin() {
+        return Optional.ofNullable(login);
     }
 
-    public StringFilter userId() {
-        if (userId == null) {
-            setUserId(new StringFilter());
+    public StringFilter login() {
+        if (login == null) {
+            setLogin(new StringFilter());
         }
-        return userId;
+        return login;
     }
 
-    public void setUserId(StringFilter userId) {
-        this.userId = userId;
+    public void setLogin(StringFilter login) {
+        this.login = login;
     }
 
     public BooleanFilter getIsSeen() {
@@ -175,7 +175,7 @@ public class UserGroupCriteria implements Serializable, Criteria {
         final UserGroupCriteria that = (UserGroupCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(userId, that.userId) &&
+            Objects.equals(login, that.login) &&
             Objects.equals(isSeen, that.isSeen) &&
             Objects.equals(isTurnOnNoti, that.isTurnOnNoti) &&
             Objects.equals(groupId, that.groupId) &&
@@ -185,7 +185,7 @@ public class UserGroupCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, isSeen, isTurnOnNoti, groupId, distinct);
+        return Objects.hash(id, login, isSeen, isTurnOnNoti, groupId, distinct);
     }
 
     // prettier-ignore
@@ -193,7 +193,7 @@ public class UserGroupCriteria implements Serializable, Criteria {
     public String toString() {
         return "UserGroupCriteria{" +
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
-            optionalUserId().map(f -> "userId=" + f + ", ").orElse("") +
+            optionalLogin().map(f -> "Login=" + f + ", ").orElse("") +
             optionalIsSeen().map(f -> "isSeen=" + f + ", ").orElse("") +
             optionalIsTurnOnNoti().map(f -> "isTurnOnNoti=" + f + ", ").orElse("") +
             optionalGroupId().map(f -> "groupId=" + f + ", ").orElse("") +

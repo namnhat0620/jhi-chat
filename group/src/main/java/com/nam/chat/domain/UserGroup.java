@@ -10,20 +10,21 @@ import org.springframework.data.domain.Persistable;
  * A UserGroup.
  */
 @Entity
-@Table(name = "user_group")
-@JsonIgnoreProperties(value = { "new", "id" })
+@Table(name = "jhi_user_group")
+@JsonIgnoreProperties(value = { "new" })
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class UserGroup implements Serializable, Persistable<String> {
+public class UserGroup implements Serializable, Persistable<Long> {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "id")
-    private String id;
+    @GeneratedValue
+    @Id
+    private Long id;
 
     @NotNull
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "login", nullable = false)
+    private String login;
 
     @Column(name = "is_seen")
     private Boolean isSeen;
@@ -41,26 +42,26 @@ public class UserGroup implements Serializable, Persistable<String> {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public UserGroup id(String id) {
+    public UserGroup id(Long id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public String getLogin() {
+        return this.login;
     }
 
-    public UserGroup userId(String userId) {
-        this.setUserId(userId);
+    public UserGroup login(String login) {
+        this.setLogin(login);
         return this;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Boolean getIsSeen() {
@@ -96,8 +97,8 @@ public class UserGroup implements Serializable, Persistable<String> {
     }
 
     @Override
-    public String getId() {
-        return this.userId;
+    public Long getId() {
+        return this.id;
     }
 
     @org.springframework.data.annotation.Transient
@@ -135,7 +136,7 @@ public class UserGroup implements Serializable, Persistable<String> {
         if (!(o instanceof UserGroup)) {
             return false;
         }
-        return getUserId() != null && getUserId().equals(((UserGroup) o).getUserId());
+        return getLogin() != null && getLogin().equals(((UserGroup) o).getLogin());
     }
 
     @Override
@@ -148,7 +149,7 @@ public class UserGroup implements Serializable, Persistable<String> {
     @Override
     public String toString() {
         return "UserGroup{" +
-            "userId=" + getUserId() +
+            "Login=" + getLogin() +
             ", id='" + getId() + "'" +
             ", isSeen='" + getIsSeen() + "'" +
             ", isTurnOnNoti='" + getIsTurnOnNoti() + "'" +

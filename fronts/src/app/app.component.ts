@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { ApplicationConfigService } from './core/config/application-config.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +9,12 @@ import { PrimeNGConfig } from 'primeng/api';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private primengConfig: PrimeNGConfig) {}
+  private readonly applicationConfigService = inject(ApplicationConfigService);
+
+  constructor(private primengConfig: PrimeNGConfig) {
+    this.applicationConfigService.setEndpointPrefix(environment.serverApiUrl);
+
+  }
 
   ngOnInit() {
     this.primengConfig.ripple = true;

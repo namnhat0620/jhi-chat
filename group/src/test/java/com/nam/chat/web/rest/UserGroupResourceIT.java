@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserGroupResourceIT {
 
-    private static final String DEFAULT_ID = "AAAAAAAAAA";
-    private static final String UPDATED_ID = "BBBBBBBBBB";
+    private static final Long DEFAULT_ID = 1L;
+    private static final Long UPDATED_ID = 2L;
 
     private static final Boolean DEFAULT_IS_SEEN = false;
     private static final Boolean UPDATED_IS_SEEN = true;
@@ -69,7 +69,7 @@ class UserGroupResourceIT {
      */
     public static UserGroup createEntity() {
         return new UserGroup()
-            .userId(UUID.randomUUID().toString())
+            .login(UUID.randomUUID().toString())
             .id(DEFAULT_ID)
             .isSeen(DEFAULT_IS_SEEN)
             .isTurnOnNoti(DEFAULT_IS_TURN_ON_NOTI);
@@ -83,7 +83,7 @@ class UserGroupResourceIT {
      */
     public static UserGroup createUpdatedEntity() {
         return new UserGroup()
-            .userId(UUID.randomUUID().toString())
+            .login(UUID.randomUUID().toString())
             .id(UPDATED_ID)
             .isSeen(UPDATED_IS_SEEN)
             .isTurnOnNoti(UPDATED_IS_TURN_ON_NOTI);
@@ -145,7 +145,7 @@ class UserGroupResourceIT {
     @Transactional
     void getAllUserGroups() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         // Get all the userGroupList
@@ -153,7 +153,7 @@ class UserGroupResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=userId,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(userGroup.getUserId())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(userGroup.getLogin())))
             .andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
             .andExpect(jsonPath("$.[*].isSeen").value(hasItem(DEFAULT_IS_SEEN.booleanValue())))
             .andExpect(jsonPath("$.[*].isTurnOnNoti").value(hasItem(DEFAULT_IS_TURN_ON_NOTI.booleanValue())));
@@ -163,15 +163,15 @@ class UserGroupResourceIT {
     @Transactional
     void getUserGroup() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         // Get the userGroup
         restUserGroupMockMvc
-            .perform(get(ENTITY_API_URL_ID, userGroup.getUserId()))
+            .perform(get(ENTITY_API_URL_ID, userGroup.getLogin()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.userId").value(userGroup.getUserId()))
+            .andExpect(jsonPath("$.userId").value(userGroup.getLogin()))
             .andExpect(jsonPath("$.id").value(DEFAULT_ID))
             .andExpect(jsonPath("$.isSeen").value(DEFAULT_IS_SEEN.booleanValue()))
             .andExpect(jsonPath("$.isTurnOnNoti").value(DEFAULT_IS_TURN_ON_NOTI.booleanValue()));
@@ -183,7 +183,7 @@ class UserGroupResourceIT {
         // Initialize the database
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
-        String id = userGroup.getUserId();
+        Long id = userGroup.getId();
 
         defaultUserGroupFiltering("userId.equals=" + id, "userId.notEquals=" + id);
     }
@@ -336,7 +336,7 @@ class UserGroupResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=userId,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(userGroup.getUserId())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(userGroup.getLogin())))
             .andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
             .andExpect(jsonPath("$.[*].isSeen").value(hasItem(DEFAULT_IS_SEEN.booleanValue())))
             .andExpect(jsonPath("$.[*].isTurnOnNoti").value(hasItem(DEFAULT_IS_TURN_ON_NOTI.booleanValue())));
@@ -379,20 +379,20 @@ class UserGroupResourceIT {
     @Transactional
     void putExistingUserGroup() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setId(1L);
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the userGroup
-        UserGroup updatedUserGroup = userGroupRepository.findById(userGroup.getUserId()).orElseThrow();
+        UserGroup updatedUserGroup = userGroupRepository.findById(userGroup.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedUserGroup are not directly saved in db
         em.detach(updatedUserGroup);
         updatedUserGroup.id(UPDATED_ID).isSeen(UPDATED_IS_SEEN).isTurnOnNoti(UPDATED_IS_TURN_ON_NOTI);
 
         restUserGroupMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedUserGroup.getUserId())
+                put(ENTITY_API_URL_ID, updatedUserGroup.getLogin())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(updatedUserGroup))
@@ -408,12 +408,12 @@ class UserGroupResourceIT {
     @Transactional
     void putNonExistingUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, userGroup.getUserId())
+                put(ENTITY_API_URL_ID, userGroup.getLogin())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(userGroup))
@@ -428,7 +428,7 @@ class UserGroupResourceIT {
     @Transactional
     void putWithIdMismatchUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
@@ -448,7 +448,7 @@ class UserGroupResourceIT {
     @Transactional
     void putWithMissingIdPathParamUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
@@ -463,20 +463,20 @@ class UserGroupResourceIT {
     @Transactional
     void partialUpdateUserGroupWithPatch() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the userGroup using partial update
         UserGroup partialUpdatedUserGroup = new UserGroup();
-        partialUpdatedUserGroup.setUserId(userGroup.getUserId());
+        partialUpdatedUserGroup.setLogin(userGroup.getLogin());
 
         partialUpdatedUserGroup.isSeen(UPDATED_IS_SEEN);
 
         restUserGroupMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedUserGroup.getUserId())
+                patch(ENTITY_API_URL_ID, partialUpdatedUserGroup.getLogin())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedUserGroup))
@@ -496,20 +496,20 @@ class UserGroupResourceIT {
     @Transactional
     void fullUpdateUserGroupWithPatch() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the userGroup using partial update
         UserGroup partialUpdatedUserGroup = new UserGroup();
-        partialUpdatedUserGroup.setUserId(userGroup.getUserId());
+        partialUpdatedUserGroup.setLogin(userGroup.getLogin());
 
         partialUpdatedUserGroup.id(UPDATED_ID).isSeen(UPDATED_IS_SEEN).isTurnOnNoti(UPDATED_IS_TURN_ON_NOTI);
 
         restUserGroupMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedUserGroup.getUserId())
+                patch(ENTITY_API_URL_ID, partialUpdatedUserGroup.getLogin())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedUserGroup))
@@ -526,12 +526,12 @@ class UserGroupResourceIT {
     @Transactional
     void patchNonExistingUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, userGroup.getUserId())
+                patch(ENTITY_API_URL_ID, userGroup.getLogin())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(userGroup))
@@ -546,7 +546,7 @@ class UserGroupResourceIT {
     @Transactional
     void patchWithIdMismatchUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
@@ -566,7 +566,7 @@ class UserGroupResourceIT {
     @Transactional
     void patchWithMissingIdPathParamUserGroup() throws Exception {
         long databaseSizeBeforeUpdate = getRepositoryCount();
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserGroupMockMvc
@@ -583,14 +583,14 @@ class UserGroupResourceIT {
     @Transactional
     void deleteUserGroup() throws Exception {
         // Initialize the database
-        userGroup.setUserId(UUID.randomUUID().toString());
+        userGroup.setLogin(UUID.randomUUID().toString());
         insertedUserGroup = userGroupRepository.saveAndFlush(userGroup);
 
         long databaseSizeBeforeDelete = getRepositoryCount();
 
         // Delete the userGroup
         restUserGroupMockMvc
-            .perform(delete(ENTITY_API_URL_ID, userGroup.getUserId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, userGroup.getLogin()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -614,7 +614,7 @@ class UserGroupResourceIT {
     }
 
     protected UserGroup getPersistedUserGroup(UserGroup userGroup) {
-        return userGroupRepository.findById(userGroup.getUserId()).orElseThrow();
+        return userGroupRepository.findById(userGroup.getId()).orElseThrow();
     }
 
     protected void assertPersistedUserGroupToMatchAllProperties(UserGroup expectedUserGroup) {

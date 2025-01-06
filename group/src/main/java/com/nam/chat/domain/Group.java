@@ -12,24 +12,28 @@ import org.springframework.data.domain.Persistable;
  */
 @Entity
 @Table(name = "jhi_group")
-@JsonIgnoreProperties(value = { "new", "id" })
+@JsonIgnoreProperties(value = { "new" })
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Group implements Serializable, Persistable<String> {
+public class Group implements Serializable, Persistable<Long> {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "id")
-    private String id;
-
+    @GeneratedValue
     @Id
+    private Long id;
+
     @Column(name = "type")
     private String type;
+        
+        @Column(name = "name")
+        private String name;
+    
+        @Column(name = "avatar")
+        private String avatar;
 
     @Column(name = "last_message_id")
     private String lastMessageId;
-
-    @Column(name = "avatar")
-    private String avatar;
 
     @org.springframework.data.annotation.Transient
     @Transient
@@ -41,12 +45,12 @@ public class Group implements Serializable, Persistable<String> {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Group id(String id) {
+    public Group id(Long id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,6 +66,32 @@ public class Group implements Serializable, Persistable<String> {
     public void setType(String type) {
         this.type = type;
     }
+    
+    public String getName() {
+        return this.name;
+    }
+
+    public Group name(String name) {
+        this.setName(name);
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    public Group avatar(String avatar) {
+        this.setAvatar(avatar);
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getLastMessageId() {
         return this.lastMessageId;
@@ -76,19 +106,6 @@ public class Group implements Serializable, Persistable<String> {
         this.lastMessageId = lastMessageId;
     }
 
-    public String getAvatar() {
-        return this.avatar;
-    }
-
-    public Group avatar(String avatar) {
-        this.setAvatar(avatar);
-        return this;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     @PostLoad
     @PostPersist
     public void updateEntityState() {
@@ -96,8 +113,8 @@ public class Group implements Serializable, Persistable<String> {
     }
 
     @Override
-    public String getId() {
-        return this.type;
+    public Long getId() {
+        return this.id;
     }
 
     @org.springframework.data.annotation.Transient
@@ -168,8 +185,9 @@ public class Group implements Serializable, Persistable<String> {
         return "Group{" +
             "type=" + getType() +
             ", id='" + getId() + "'" +
-            ", lastMessageId='" + getLastMessageId() + "'" +
+            ", name='" + getName() + "'" +
             ", avatar='" + getAvatar() + "'" +
+            ", lastMessageId='" + getLastMessageId() + "'" +
             "}";
     }
 }

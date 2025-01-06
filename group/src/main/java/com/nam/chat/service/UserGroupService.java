@@ -56,7 +56,7 @@ public class UserGroupService {
         LOG.debug("Request to partially update UserGroup : {}", userGroup);
 
         return userGroupRepository
-            .findById(userGroup.getUserId())
+            .findById(userGroup.getId())
             .map(existingUserGroup -> {
                 if (userGroup.getId() != null) {
                     existingUserGroup.setId(userGroup.getId());
@@ -80,7 +80,7 @@ public class UserGroupService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<UserGroup> findOne(String id) {
+    public Optional<UserGroup> findOne(Long id) {
         LOG.debug("Request to get UserGroup : {}", id);
         return userGroupRepository.findById(id);
     }
@@ -90,7 +90,7 @@ public class UserGroupService {
      *
      * @param id the id of the entity.
      */
-    public void delete(String id) {
+    public void delete(Long id) {
         LOG.debug("Request to delete UserGroup : {}", id);
         userGroupRepository.deleteById(id);
     }

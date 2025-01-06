@@ -46,7 +46,7 @@ public class UserGroupAsserts {
         assertThat(expected)
             .as("Verify UserGroup relevant properties")
             .satisfies(e -> assertThat(e.getId()).as("check id").isEqualTo(actual.getId()))
-            .satisfies(e -> assertThat(e.getUserId()).as("check userId").isEqualTo(actual.getUserId()))
+            .satisfies(e -> assertThat(e.getLogin()).as("check login").isEqualTo(actual.getLogin()))
             .satisfies(e -> assertThat(e.getIsSeen()).as("check isSeen").isEqualTo(actual.getIsSeen()))
             .satisfies(e -> assertThat(e.getIsTurnOnNoti()).as("check isTurnOnNoti").isEqualTo(actual.getIsTurnOnNoti()));
     }

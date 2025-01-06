@@ -61,12 +61,12 @@ public class UserGroupResource {
     @PostMapping("")
     public ResponseEntity<UserGroup> createUserGroup(@Valid @RequestBody UserGroup userGroup) throws URISyntaxException {
         LOG.debug("REST request to save UserGroup : {}", userGroup);
-        if (userGroupRepository.existsById(userGroup.getUserId())) {
+        if (userGroupRepository.existsById(userGroup.getId())) {
             throw new BadRequestAlertException("userGroup already exists", ENTITY_NAME, "idexists");
         }
         userGroup = userGroupService.save(userGroup);
-        return ResponseEntity.created(new URI("/api/user-groups/" + userGroup.getUserId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, userGroup.getUserId()))
+        return ResponseEntity.created(new URI("/api/user-groups/" + userGroup.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, userGroup.getId().toString()))
             .body(userGroup);
     }
 
@@ -80,33 +80,33 @@ public class UserGroupResource {
      * or with status {@code 500 (Internal Server Error)} if the userGroup couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{userId}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserGroup> updateUserGroup(
-        @PathVariable(value = "userId", required = false) final String userId,
+        @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody UserGroup userGroup
     ) throws URISyntaxException {
-        LOG.debug("REST request to update UserGroup : {}, {}", userId, userGroup);
-        if (userGroup.getUserId() == null) {
+        LOG.debug("REST request to update UserGroup : {}, {}", id, userGroup);
+        if (userGroup.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(userId, userGroup.getUserId())) {
+        if (!Objects.equals(id, userGroup.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!userGroupRepository.existsById(userId)) {
+        if (!userGroupRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         userGroup = userGroupService.update(userGroup);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userGroup.getUserId()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userGroup.getId().toString()))
             .body(userGroup);
     }
 
     /**
-     * {@code PATCH  /user-groups/:userId} : Partial updates given fields of an existing userGroup, field will ignore if it is null
+     * {@code PATCH  /user-groups/:Id} : Partial updates given fields of an existing userGroup, field will ignore if it is null
      *
-     * @param userId the id of the userGroup to save.
+     * @param Id the id of the userGroup to save.
      * @param userGroup the userGroup to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userGroup,
      * or with status {@code 400 (Bad Request)} if the userGroup is not valid,
@@ -114,20 +114,20 @@ public class UserGroupResource {
      * or with status {@code 500 (Internal Server Error)} if the userGroup couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{userId}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/{Id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<UserGroup> partialUpdateUserGroup(
-        @PathVariable(value = "userId", required = false) final String userId,
+        @PathVariable(value = "Id", required = false) final Long Id,
         @NotNull @RequestBody UserGroup userGroup
     ) throws URISyntaxException {
-        LOG.debug("REST request to partial update UserGroup partially : {}, {}", userId, userGroup);
-        if (userGroup.getUserId() == null) {
+        LOG.debug("REST request to partial update UserGroup partially : {}, {}", Id, userGroup);
+        if (userGroup.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(userId, userGroup.getUserId())) {
+        if (!Objects.equals(Id, userGroup.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        if (!userGroupRepository.existsById(userId)) {
+        if (!userGroupRepository.existsById(Id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
@@ -135,7 +135,7 @@ public class UserGroupResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userGroup.getUserId())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userGroup.getId().toString())
         );
     }
 
@@ -172,7 +172,7 @@ public class UserGroupResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userGroup, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserGroup> getUserGroup(@PathVariable("id") String id) {
+    public ResponseEntity<UserGroup> getUserGroup(@PathVariable("id") Long id) {
         LOG.debug("REST request to get UserGroup : {}", id);
         Optional<UserGroup> userGroup = userGroupService.findOne(id);
         return ResponseUtil.wrapOrNotFound(userGroup);
@@ -185,9 +185,9 @@ public class UserGroupResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserGroup(@PathVariable("id") String id) {
+    public ResponseEntity<Void> deleteUserGroup(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete UserGroup : {}", id);
         userGroupService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id)).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

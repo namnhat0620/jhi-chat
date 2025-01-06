@@ -9,7 +9,7 @@ import { StringConstants } from 'src/app/config/constants';
 })
 export class UserService {
   private readonly apiUrl =
-    this.applicationConfigService.getEndpointFor('users');
+    this.applicationConfigService.getEndpointFor('/api/users');
 
   constructor(
     private readonly http: HttpClient,

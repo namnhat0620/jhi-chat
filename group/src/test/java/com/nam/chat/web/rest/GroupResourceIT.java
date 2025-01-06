@@ -32,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class GroupResourceIT {
 
-    private static final String DEFAULT_ID = "AAAAAAAAAA";
-    private static final String UPDATED_ID = "BBBBBBBBBB";
+    private static final Long DEFAULT_ID = 1L;
+    private static final Long UPDATED_ID = 2L;
 
     private static final String DEFAULT_LAST_MESSAGE_ID = "AAAAAAAAAA";
     private static final String UPDATED_LAST_MESSAGE_ID = "BBBBBBBBBB";
@@ -397,7 +397,7 @@ class GroupResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
         // Update the group
-        Group updatedGroup = groupRepository.findById(group.getType()).orElseThrow();
+        Group updatedGroup = groupRepository.findById(group.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedGroup are not directly saved in db
         em.detach(updatedGroup);
         updatedGroup.id(UPDATED_ID).lastMessageId(UPDATED_LAST_MESSAGE_ID).avatar(UPDATED_AVATAR);
@@ -621,7 +621,7 @@ class GroupResourceIT {
     }
 
     protected Group getPersistedGroup(Group group) {
-        return groupRepository.findById(group.getType()).orElseThrow();
+        return groupRepository.findById(group.getId()).orElseThrow();
     }
 
     protected void assertPersistedGroupToMatchAllProperties(Group expectedGroup) {

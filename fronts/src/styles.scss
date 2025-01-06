@@ -10,3 +10,9 @@ $app-theme: #f1f1f1;
     font-weight: 700;
     font-size: 1.25rem;
 }
+
+html, body {
+    height: 100%;    /* Full height for both html and body */
+    margin: 0;       /* Remove any default margin */
+    padding: 0;      /* Remove any default padding */
+}

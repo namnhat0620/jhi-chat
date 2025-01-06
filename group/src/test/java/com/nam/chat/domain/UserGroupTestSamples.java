@@ -5,14 +5,14 @@ import java.util.UUID;
 public class UserGroupTestSamples {
 
     public static UserGroup getUserGroupSample1() {
-        return new UserGroup().id("id1").userId("userId1");
+        return new UserGroup().id(1L);
     }
 
     public static UserGroup getUserGroupSample2() {
-        return new UserGroup().id("id2").userId("userId2");
+        return new UserGroup().id(2L);
     }
 
     public static UserGroup getUserGroupRandomSampleGenerator() {
-        return new UserGroup().id(UUID.randomUUID().toString()).userId(UUID.randomUUID().toString());
+        return new UserGroup().id(Math.abs(UUID.randomUUID().getMostSignificantBits()));
     }
 }

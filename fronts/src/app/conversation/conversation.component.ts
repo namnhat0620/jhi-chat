@@ -1,22 +1,39 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Group, GroupType } from '../services/group/group.model';
+import { GroupService } from '../services/group/group.service';
 
 @Component({
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.scss']
 })
-export class ConversationComponent {
-  private _conversation: any = null;
-  userName: string = '';
-  avatarUrl: string = 'assets/avatar-default.svg';
+export class ConversationComponent implements OnChanges {
+  name: string = '';
+  avatar: string = 'assets/avatar-default.svg';
 
-  @Input() set conversation(value: any) {
-    this._conversation = value;
-    this.userName = value?.login ?? '';
-    this.avatarUrl = value?.avatar ?? 'assets/avatar-default.svg';
+  @Input() conversation: any;
+
+  @Input() type: 'USER' | 'CONVERSATION' = 'CONVERSATION';
+  @Output() groupChangeEvent = new EventEmitter<Group | null>();
+
+  constructor(private readonly groupService: GroupService) { }
+
+  ngOnChanges(): void {
+    this.name = (this.type === 'USER' ? this.conversation?.login : this.conversation?.name) ?? '';
+    this.avatar = this.conversation?.avatar ?? 'assets/avatar-default.svg';
   }
 
-  get conversation(): any {
-    return this._conversation;
+  createConversation() {
+    if (this.type === 'CONVERSATION') {
+      return;
+    }
+    this.groupService.create({
+      type: GroupType.PRIVATE,
+      userGroups: [{
+        login: this.name
+      }]
+    }).subscribe((res) => {
+      this.groupChangeEvent.emit(res?.body)
+    })
   }
 }

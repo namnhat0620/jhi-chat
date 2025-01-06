@@ -67,11 +67,11 @@ public class UserGroupQueryService extends QueryService<UserGroup> {
             if (criteria.getDistinct() != null) {
                 specification = specification.and(distinct(criteria.getDistinct()));
             }
-            if (criteria.getUserId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getUserId(), UserGroup_.userId));
+            if (criteria.getLogin() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLogin(), UserGroup_.login));
             }
             if (criteria.getId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getId(), UserGroup_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), UserGroup_.id));
             }
             if (criteria.getIsSeen() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsSeen(), UserGroup_.isSeen));

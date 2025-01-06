@@ -1,0 +1,2 @@
+ALTER SEQUENCE jhi_group_seq INCREMENT BY 50;
+ALTER SEQUENCE jhi_user_group_seq INCREMENT BY 50;

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { UserService } from '../services/user/user.service';
+import { Group } from '../services/group/group.model';
 
 @Component({
   selector: 'app-list-conversation',
@@ -12,6 +13,7 @@ export class ListConversationComponent {
   isValueExisted = false;
   conversations: any[] = [];
   private valueChanged = new Subject<string>(); // Subject to emit value changes
+  @Output() groupChangeEvent = new EventEmitter<Group>();
 
   constructor(private userService: UserService) { }
 
@@ -38,5 +40,10 @@ export class ListConversationComponent {
   clearValue(): void {
     this.value = ""
     this.onValueChange()
+  }
+
+  handleGroupChange(group: Group | null) {
+    if(!group) return;
+    this.groupChangeEvent.emit(group)
   }
 }

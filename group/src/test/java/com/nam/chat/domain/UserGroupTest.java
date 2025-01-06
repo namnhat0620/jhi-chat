@@ -16,7 +16,7 @@ class UserGroupTest {
         UserGroup userGroup2 = new UserGroup();
         assertThat(userGroup1).isNotEqualTo(userGroup2);
 
-        userGroup2.setUserId(userGroup1.getUserId());
+        userGroup2.setId(userGroup1.getId());
         assertThat(userGroup1).isEqualTo(userGroup2);
 
         userGroup2 = getUserGroupSample2();

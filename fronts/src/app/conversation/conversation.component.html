@@ -1,8 +1,8 @@
-<div class="jhi-conversation w-100 d-flex p-2 gap-2">
+<div class="jhi-conversation w-100 d-flex p-2 gap-2" (click)="createConversation()">
     <div class="jhi-conversation-avatar">
-        <img class="jhi-conversation-avatar-img" src="{{avatarUrl}}" />
+        <img class="jhi-conversation-avatar-img" src="{{avatar}}" />
     </div>
     <div class="jhi-conversation-detail">
-        <label class="jhi-conversation-username">{{userName}}</label>
+        <label class="jhi-conversation-username">{{name}}</label>
     </div>
 </div>

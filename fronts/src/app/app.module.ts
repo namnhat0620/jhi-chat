@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { HttpTokenInterceptor } from './services/interceptor/http-tocken.interceptor';
 import { authGuard } from './services/guard/auth.guard';
 import { ConversationComponent } from './conversation/conversation.component';
+import { ChatComponent } from './chat/chat.component';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -29,6 +30,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     CardComponent,
     ListConversationComponent,
     ConversationComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,

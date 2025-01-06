@@ -22,7 +22,7 @@ public class GroupCriteria implements Serializable, Criteria {
 
     private static final long serialVersionUID = 1L;
 
-    private StringFilter id;
+    private LongFilter id;
 
     private StringFilter type;
 
@@ -30,18 +30,18 @@ public class GroupCriteria implements Serializable, Criteria {
 
     private StringFilter avatar;
 
-    private StringFilter userGroupId;
+    private LongFilter userGroupId;
 
     private Boolean distinct;
 
     public GroupCriteria() {}
 
     public GroupCriteria(GroupCriteria other) {
-        this.id = other.optionalId().map(StringFilter::copy).orElse(null);
+        this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.type = other.optionalType().map(StringFilter::copy).orElse(null);
         this.lastMessageId = other.optionalLastMessageId().map(StringFilter::copy).orElse(null);
         this.avatar = other.optionalAvatar().map(StringFilter::copy).orElse(null);
-        this.userGroupId = other.optionalUserGroupId().map(StringFilter::copy).orElse(null);
+        this.userGroupId = other.optionalUserGroupId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
 
@@ -50,22 +50,22 @@ public class GroupCriteria implements Serializable, Criteria {
         return new GroupCriteria(this);
     }
 
-    public StringFilter getId() {
+    public LongFilter getId() {
         return id;
     }
 
-    public Optional<StringFilter> optionalId() {
+    public Optional<LongFilter> optionalId() {
         return Optional.ofNullable(id);
     }
 
-    public StringFilter id() {
+    public LongFilter id() {
         if (id == null) {
-            setId(new StringFilter());
+            setId(new LongFilter());
         }
         return id;
     }
 
-    public void setId(StringFilter id) {
+    public void setId(LongFilter id) {
         this.id = id;
     }
 
@@ -126,22 +126,22 @@ public class GroupCriteria implements Serializable, Criteria {
         this.avatar = avatar;
     }
 
-    public StringFilter getUserGroupId() {
+    public LongFilter getUserGroupId() {
         return userGroupId;
     }
 
-    public Optional<StringFilter> optionalUserGroupId() {
+    public Optional<LongFilter> optionalUserGroupId() {
         return Optional.ofNullable(userGroupId);
     }
 
-    public StringFilter userGroupId() {
+    public LongFilter userGroupId() {
         if (userGroupId == null) {
-            setUserGroupId(new StringFilter());
+            setUserGroupId(new LongFilter());
         }
         return userGroupId;
     }
 
-    public void setUserGroupId(StringFilter userGroupId) {
+    public void setUserGroupId(LongFilter userGroupId) {
         this.userGroupId = userGroupId;
     }
 

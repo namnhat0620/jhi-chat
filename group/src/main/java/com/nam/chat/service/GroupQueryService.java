@@ -73,7 +73,7 @@ public class GroupQueryService extends QueryService<Group> {
                 specification = specification.and(buildStringSpecification(criteria.getType(), Group_.type));
             }
             if (criteria.getId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getId(), Group_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Group_.id));
             }
             if (criteria.getLastMessageId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastMessageId(), Group_.lastMessageId));
@@ -83,7 +83,7 @@ public class GroupQueryService extends QueryService<Group> {
             }
             if (criteria.getUserGroupId() != null) {
                 specification = specification.and(
-                    buildSpecification(criteria.getUserGroupId(), root -> root.join(Group_.userGroups, JoinType.LEFT).get(UserGroup_.userId)
+                    buildSpecification(criteria.getUserGroupId(), root -> root.join(Group_.userGroups, JoinType.LEFT).get(UserGroup_.id)
                     )
                 );
             }
