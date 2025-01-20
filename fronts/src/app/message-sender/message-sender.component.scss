@@ -1,0 +1,11 @@
+@import "src/styles.scss";
+
+.jhi-message-sender {
+
+    .p-inputtext {
+        height: 2rem;
+        border-radius: 2rem;
+    background-color: $app-theme;
+    width: -webkit-fill-available;
+}
+}

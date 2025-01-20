@@ -18,6 +18,7 @@ import { HttpTokenInterceptor } from './services/interceptor/http-tocken.interce
 import { authGuard } from './services/guard/auth.guard';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ChatComponent } from './chat/chat.component';
+import { MessageSenderComponent } from './message-sender/message-sender.component';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -31,6 +32,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     ListConversationComponent,
     ConversationComponent,
     ChatComponent,
+    MessageSenderComponent,
   ],
   imports: [
     BrowserModule,
