@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Keycloak from 'keycloak-js'
+import Keycloak from 'keycloak-js';
 import { UserProfile } from 'src/app/model/user-profile';
 
 @Injectable({
@@ -41,7 +41,23 @@ export class KeycloakService {
   }
 
   logout() {
-    // return this.keycloak.logout({redirectUri: 'http://localhost:4200'})
+    return this.keycloak.logout({ redirectUri: 'http://localhost:4200' })
+  }
+
+  accountManagement() {
+    return this.keycloak.accountManagement()
+  }
+
+  get userId(): string {
+    return this.keycloak.tokenParsed?.sub ?? '';
+  }
+
+  get isTokenValid(): boolean {
+    return !this.keycloak.isTokenExpired();
+  }
+
+  get fullName(): string {
+    return this.keycloak.tokenParsed?.['name'] ?? '';
   }
 
   private startTokenRefresh() {
