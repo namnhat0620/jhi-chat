@@ -42,7 +42,6 @@ public class GroupService {
      */
     public Group save(Group group) {
         LOG.debug("Request to save Group : {}", group);
-        Group savedGroup = groupRepository.save(group);
         String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElse(StringUtils.EMPTY);
         String newFriendLogin = group.getUserGroups().stream().findFirst().map(UserGroup::getLogin)
                 .orElse(StringUtils.EMPTY);
@@ -59,6 +58,7 @@ public class GroupService {
         group.getUserGroups().add(new UserGroup().login(currentUserLogin));
 
         // Create new group
+        Group savedGroup = groupRepository.save(group);
         Optional.ofNullable(group.getUserGroups()).orElse(Collections.emptySet()).stream().forEach(userGroup -> {
             userGroup.setGroup(savedGroup);
             userGroupRepository.save(userGroup);

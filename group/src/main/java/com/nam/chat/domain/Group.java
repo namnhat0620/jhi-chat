@@ -25,12 +25,12 @@ public class Group implements Serializable, Persistable<Long> {
 
     @Column(name = "type")
     private String type;
-        
-        @Column(name = "name")
-        private String name;
-    
-        @Column(name = "avatar")
-        private String avatar;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     @Column(name = "last_message_id")
     private String lastMessageId;
@@ -39,7 +39,7 @@ public class Group implements Serializable, Persistable<Long> {
     @Transient
     private boolean isPersisted;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "group")
     @JsonIgnoreProperties(value = { "group" }, allowSetters = true)
     private Set<UserGroup> userGroups = new HashSet<>();
 
@@ -66,7 +66,7 @@ public class Group implements Serializable, Persistable<Long> {
     public void setType(String type) {
         this.type = type;
     }
-    
+
     public String getName() {
         return this.name;
     }
@@ -79,7 +79,7 @@ public class Group implements Serializable, Persistable<Long> {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getAvatar() {
         return this.avatar;
     }
@@ -160,7 +160,8 @@ public class Group implements Serializable, Persistable<Long> {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -175,7 +176,8 @@ public class Group implements Serializable, Persistable<Long> {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -183,11 +185,11 @@ public class Group implements Serializable, Persistable<Long> {
     @Override
     public String toString() {
         return "Group{" +
-            "type=" + getType() +
-            ", id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            ", avatar='" + getAvatar() + "'" +
-            ", lastMessageId='" + getLastMessageId() + "'" +
-            "}";
+                "type=" + getType() +
+                ", id='" + getId() + "'" +
+                ", name='" + getName() + "'" +
+                ", avatar='" + getAvatar() + "'" +
+                ", lastMessageId='" + getLastMessageId() + "'" +
+                "}";
     }
 }

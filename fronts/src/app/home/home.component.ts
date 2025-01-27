@@ -3,6 +3,7 @@ import { Group } from '../services/group/group.model';
 import { KeycloakService } from '../services/keycloak/keycloak.service';
 import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
+import { GroupService } from '../services/group/group.service';
 
 @Component({
   selector: 'app-home',
@@ -12,12 +13,15 @@ import * as Stomp from 'stompjs';
 export class HomeComponent implements OnInit {
   group: Group | null = null;
   socketClient: any = null;
+  conversations: any;
 
   constructor(
-    private readonly keycloakService: KeycloakService
+    private readonly keycloakService: KeycloakService,
+    private readonly groupService: GroupService
   ) { }
 
   ngOnInit(): void {
+    this.getListGroup();
     this.initWebSocket();
   }
 
@@ -36,5 +40,11 @@ export class HomeComponent implements OnInit {
         }, () => console.error('Error subscribing to ' + subUrl));
       });
     }
+  }
+
+  private getListGroup() {
+    this.groupService.getAll().subscribe((res) => {
+      this.conversations = res.body;
+    });
   }
 }

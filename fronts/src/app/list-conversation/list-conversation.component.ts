@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { UserService } from '../services/user/user.service';
 import { Group } from '../services/group/group.model';
@@ -11,11 +11,12 @@ import { Group } from '../services/group/group.model';
 export class ListConversationComponent {
   value = ''; // Value from the input field
   isValueExisted = false;
-  conversations: any[] = [];
-  private valueChanged = new Subject<string>(); // Subject to emit value changes
+  @Input() conversations: any[] = [];
+  @Input() type: 'USER' | 'GROUP' = 'GROUP';
   @Output() groupChangeEvent = new EventEmitter<Group>();
+  private readonly valueChanged = new Subject<string>(); // Subject to emit value changes
 
-  constructor(private userService: UserService) { }
+  constructor(private readonly userService: UserService) { }
 
   ngOnInit(): void {
     // Subscribe to the valueChanged subject in ngOnInit to handle API calls
@@ -26,7 +27,10 @@ export class ListConversationComponent {
         switchMap((value: string) => this.userService.getUserByUsername(value)) // API call
       )
       .subscribe({
-        next: (data) => this.conversations = data, // Handle API response
+        next: (data) => {
+          this.conversations = data;
+          this.type = 'USER';
+        }, // Handle API response
         error: (data) => console.error(data)
       });
   }
@@ -43,7 +47,7 @@ export class ListConversationComponent {
   }
 
   handleGroupChange(group: Group | null) {
-    if(!group) return;
+    if (!group) return;
     this.groupChangeEvent.emit(group)
   }
 }

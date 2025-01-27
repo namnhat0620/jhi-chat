@@ -1,5 +1,5 @@
 <div class="chat-home d-flex h-100">
-    <app-list-conversation class="app-list-conversation col-3"
+    <app-list-conversation class="app-list-conversation col-3" [conversations]="conversations"
         (groupChangeEvent)="handleGroupChange($event)"></app-list-conversation>
     <app-chat class="col-6" [group]="group"></app-chat>
     <app-card class="col-3"></app-card>

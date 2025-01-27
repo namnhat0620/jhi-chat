@@ -13,7 +13,7 @@
 
     <!-- List conversation -->
     <div *ngFor="let conversation of conversations">
-        <app-conversation [conversation]="conversation" [type]="'USER'"
+        <app-conversation [conversation]="conversation" [type]="type"
             (groupChangeEvent)="handleGroupChange($event)"></app-conversation>
     </div>
 </div>

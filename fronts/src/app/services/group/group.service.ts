@@ -32,4 +32,8 @@ export class GroupService {
   delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  getAll(): Observable<EntityArrayResponseType> {
+    return this.http.get<Group[]>(this.resourceUrl, { observe: 'response' });
+  }
 }

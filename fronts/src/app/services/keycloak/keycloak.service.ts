@@ -60,6 +60,10 @@ export class KeycloakService {
     return this.keycloak.tokenParsed?.['name'] ?? '';
   }
 
+  get currentLogin(): string {
+    return this.keycloak.tokenParsed?.['preferred_username'] ?? '';
+  }
+
   private startTokenRefresh() {
     // Refresh token before it expires (typically refresh token is valid longer than access token)
     setInterval(async () => {
