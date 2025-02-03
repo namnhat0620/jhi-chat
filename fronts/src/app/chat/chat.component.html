@@ -1,4 +1,12 @@
-<div class="jhi-chat h-100 d-flex flex-column justify-content-between pb-4">
-    <app-conversation [conversation]="group"></app-conversation>
-    <app-message-sender></app-message-sender>
+<div class="jhi-chat h-100 d-flex flex-column justify-content-between p-2 pb-4 gap-2">
+  <app-conversation [conversation]="group"></app-conversation>
+  <div class="jhi-chat-message-container d-flex flex-column-reverse gap-1">
+    <div *ngFor="let message of messages" class="d-flex flex-column" [ngClass]="{
+        'align-items-end': message?.sentFromLogin === currentLogin,
+        'align-items-start': message?.sentFromLogin !== currentLogin
+      }">
+      <app-message-text-content [message]="message"></app-message-text-content>
+    </div>
+  </div>
+  <app-message-sender [group]="group" (messageSent)="handleMessageSent($event)"></app-message-sender>
 </div>

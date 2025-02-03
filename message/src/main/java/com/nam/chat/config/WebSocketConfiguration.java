@@ -9,6 +9,9 @@ import java.util.Optional;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -19,7 +22,9 @@ import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.messaging.context.AuthenticationPrincipalArgumentResolver;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -27,6 +32,8 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nam.chat.security.AuthoritiesConstants;
@@ -35,6 +42,7 @@ import tech.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableWebSocketMessageBroker
+@Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
     public static final String IP_ADDRESS = "IP_ADDRESS";
@@ -49,20 +57,17 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/user");
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/users");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        String[] allowedOrigins = Optional.ofNullable(jHipsterProperties.getCors().getAllowedOrigins())
-                .map(origins -> origins.toArray(new String[0]))
-                .orElse(new String[0]);
         registry
                 .addEndpoint("/ws")
-                .setHandshakeHandler(defaultHandshakeHandler())
-                .setAllowedOrigins("http://localhost:4200")
+                // .addInterceptors(httpSessionHandshakeInterceptor())
+                // .setHandshakeHandler(defaultHandshakeHandler())
+                .setAllowedOrigins("http://localhost:4200", "http://localhost:8080", "http://localhost:8100")
                 .withSockJS();
-        // .setInterceptors(httpSessionHandshakeInterceptor());
     }
 
     @Override
@@ -93,7 +98,17 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
                     Map<String, Object> attributes) throws Exception {
                 if (request instanceof ServletServerHttpRequest) {
                     ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-                    attributes.put(IP_ADDRESS, servletRequest.getRemoteAddress());
+                    String authHeader = servletRequest.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+                    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                        String token = authHeader.substring(7); // Extract the token
+                        String username = extractUsernameFromToken(token); // Implement token decoding to extract the
+                                                                           // username
+
+                        if (username != null) {
+                            attributes.put("username", username); // Store in session attributes
+                        }
+                    }
                 }
                 return true;
             }
@@ -114,13 +129,34 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
             protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler,
                     Map<String, Object> attributes) {
                 Principal principal = request.getPrincipal();
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if (principal == null) {
+                    if (authentication != null) {
+                        return authentication;
+                    }
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN));
-                    principal = new AnonymousAuthenticationToken("WebsocketConfiguration", "anonymous", authorities);
+                    principal = new AnonymousAuthenticationToken("WebsocketConfiguration",
+                            "anonymous", authorities);
                 }
                 return principal;
             }
         };
+    }
+
+    private String extractUsernameFromToken(String token) {
+        // Implement this method to decode the JWT token and extract the username
+        // Example: Use a JWT library like JJWT to extract the subject (username)
+        try {
+            // Sample code for JWT decoding (you can replace this with your actual logic)
+            Claims claims = Jwts.parser()
+                    .setSigningKey("yourSecretKey")
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.getSubject(); // Assuming the username is stored as the subject
+        } catch (Exception e) {
+            return null; // Handle invalid token
+        }
     }
 }

@@ -19,6 +19,7 @@ import { authGuard } from './services/guard/auth.guard';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessageSenderComponent } from './message-sender/message-sender.component';
+import { MessageTextContentComponent } from './message-text-content/message-text-content.component';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -33,6 +34,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     ConversationComponent,
     ChatComponent,
     MessageSenderComponent,
+    MessageTextContentComponent,
   ],
   imports: [
     BrowserModule,
