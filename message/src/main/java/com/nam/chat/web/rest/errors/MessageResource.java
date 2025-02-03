@@ -6,13 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -61,9 +61,9 @@ public class MessageResource {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Message>> getAllMessages(Pageable pageable) {
-        LOG.debug("REST request to get all Messages");
-        Page<Message> page = messageService.findAll(pageable);
+    public ResponseEntity<List<Message>> getAllMessages(@RequestParam Long groupId, Pageable pageable) {
+        LOG.debug("REST request to get message with criteria: {}", groupId);
+        Page<Message> page = messageService.findAll(groupId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
                 ServletUriComponentsBuilder.fromCurrentRequest(),
                 page);

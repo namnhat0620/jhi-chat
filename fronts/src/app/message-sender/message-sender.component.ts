@@ -36,6 +36,7 @@ export class MessageSenderComponent {
       )?.login,
       content: this.message,
       messageType: MessageType.TEXT,
+      groupId: this.group?.id,
     };
   }
 }
