@@ -79,6 +79,7 @@ To build and run the application with Docker, use:
 
    ```bash
    docker-compose up --build
+   ```
 
 7. Firebase Setup:
 
