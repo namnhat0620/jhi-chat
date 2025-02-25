@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project replicates the core features of popular messaging apps, including real-time messaging, multimedia sharing, push notifications, and user authentication. It aims to provide users with a seamless messaging experience similar to leading platforms in the market.
+This project replicates the core features of popular messaging apps, including real-time messaging, multimedia sharing, push notifications, and user authentication. It is a microservices-based application generated using **JHipster** to enable scalability and easy management.
 
 ## Features
 
@@ -13,20 +13,21 @@ This project replicates the core features of popular messaging apps, including r
 
 ## Technical Stack
 
-- **Backend**: Java Spring Boot for handling the core logic, user authentication, and messaging services.
-- **Frontend**: Angular for building an interactive and dynamic web interface.
-- **Database**: PostgreSQL for storing user data, message histories, and metadata.
-- **NoSQL Database**: MongoDB for handling media files and large-scale unstructured data.
+- **Backend**: Java Spring Boot for microservices, generated using **JHipster**.
+- **Frontend**: Angular for the user interface and interactive web experience.
+- **Database**: PostgreSQL for relational data storage, MongoDB for storing unstructured media content.
+- **Containerization**: Docker for creating a portable environment with containerized services.
 - **Push Notifications**: Firebase Cloud Messaging (FCM) for real-time notifications.
-
+ 
 ## Installation
 
 ### Prerequisites
 
 1. **Java 8 or later**
 2. **Node.js and npm**
-3. **PostgreSQL** and **MongoDB** installed locally or using Docker.
-4. **Firebase Project** for push notifications setup.
+3. **Docker** installed for containerizing the application.
+4. **PostgreSQL** and **MongoDB** set up locally or using Docker.
+5. **Firebase Project** for push notifications setup.
 
 ### Steps
 
@@ -71,13 +72,21 @@ This project replicates the core features of popular messaging apps, including r
 - Set up PostgreSQL for relational data storage.
 - Set up MongoDB for unstructured media storage.
 
-6. Firebase Setup:
+6. Docker Setup:
+
+Docker Compose is used to manage all the services, including backend, frontend, database, and caching.
+To build and run the application with Docker, use:
+
+   ```bash
+   docker-compose up --build
+
+7. Firebase Setup:
 
 - Create a Firebase project and configure Cloud Messaging.
 - Add the required credentials in the backend configuration for push notifications.
 
 ## Usage
 
-- Authentication: Sign up with your email or log in if you have an existing account.
-- Messaging: Start real-time conversations with friends, send text, images, and videos.
-- Push Notifications: Keep your notifications on to stay updated with incoming messages.
+- **Authentication:** Sign up with your email or log in if you have an existing account.
+- **Messaging:** Start real-time conversations with friends, send text, images, and videos.
+- **Push Notifications:** Keep your notifications on to stay updated with incoming messages.
