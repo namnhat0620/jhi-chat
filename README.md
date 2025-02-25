@@ -36,8 +36,8 @@ This project replicates the core features of popular messaging apps, including r
 
 2. Navigate into the project directory:
 
-```bash
-cd messenger-clone
+   ```bash
+   cd messenger-clone
 
 3. Backend Setup (Java Spring Boot):
 
@@ -45,26 +45,26 @@ cd messenger-clone
 - Update the database credentials and Firebase configurations in `application.properties`.
 - Install dependencies and build the backend:
 
-```bash
-mvn clean install
-mvn spring-boot:run
+   ```bash
+   mvn clean install
+   mvn spring-boot:run
 
 4. Frontend Setup (Angular):
 
 - Navigate to the frontend directory:
 
-```bash
-cd frontend
+   ```bash
+   cd frontend
 
 - Install the required npm packages:
-
-```bash
-npm install
+   
+   ```bash
+   npm install
 
 - Start the Angular development server:
 
-```bash
-ng serve
+   ```bash
+   ng serve
 
 5. Database Setup
 
